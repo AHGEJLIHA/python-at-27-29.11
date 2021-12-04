@@ -16,13 +16,24 @@ def get_news(channel):
     return news
 
 
+def get_full_news(channel):
+    news = []
+    tags = {}
+    for item in channel.findall('item'):
+        for tag in item:
+            tags[tag.tag] = tag.text
+        news.append(tags)
+    return news
+
+
 def save_json(news, filename):
     json_file = json.dumps(news, ensure_ascii=False, indent=4).encode('utf8')
     with open(filename, 'wb') as file:
         file.write(json_file)
 
 
-save_json(get_news(get_channel()), 'news.json')
+#save_json(get_news(get_channel()), 'news.json')
+save_json(get_full_news(get_channel()), 'full_news.json')
 
 
 
